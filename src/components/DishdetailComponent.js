@@ -17,6 +17,7 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { Control, LocalForm, Errors } from "react-redux-form";
+
 {
   /*import React, { Component } from "react";
 import {
@@ -96,9 +97,9 @@ const required = val => val && val.length;
 const maxLength = len => val => !val || val.length <= len;
 const minLength = len => val => val && val.length >= len;
 
-function RenderComments({ comment }) {
-  if (comment != null) {
-    const cmmnt = comment.map(comm => {
+function RenderComments({ comments, addComment, dishId }) {
+  if (comments != null) {
+    const cmmnt = comments.map(comm => {
       return (
         <div key={comm.id}>
           <p className="m-1">{comm.comment}</p>
@@ -115,13 +116,9 @@ function RenderComments({ comment }) {
     });
     return (
       <div>
-        <div>
-          <h4>Comments</h4>
-          <ul className="list-unstyled">{cmmnt}</ul>
-        </div>
-        <div className="mt-3 ml-1">
-          <CommentForm />
-        </div>
+        <h4>Comments</h4>
+        <ul className="list-unstyled">{cmmnt}</ul>
+        <CommentForm dishId={dishId} addComment={addComment} />
       </div>
     );
   } else return <div />;
@@ -160,7 +157,11 @@ const DishDetail = props => {
           <RenderDish dish={props.dish} />
         </div>
         <div className="col-12 col-md-5 m-1">
-          <RenderComments comment={props.comments} />
+          <RenderComments
+            comments={props.comments}
+            addComment={props.addComment}
+            dishId={props.dish.id}
+          />
         </div>
       </div>
     </div>
@@ -185,8 +186,14 @@ class CommentForm extends Component {
 
   handleSubmitComment(values) {
     this.toggleModal();
-    console.log("Current State is: " + JSON.stringify(values));
-    alert("Current State is: " + JSON.stringify(values));
+    // console.log("Current State is: " + JSON.stringify(values));
+    // alert("Current State is: " + JSON.stringify(values));
+    this.props.addComment(
+      this.props.dishId,
+      values.rating,
+      values.author,
+      values.comment
+    );
   }
 
   render() {
@@ -221,12 +228,12 @@ class CommentForm extends Component {
                 </Control.select>
               </Row>
               <Row className="form-group">
-                <Label htmlFor="yourname">Your Name</Label>
+                <Label htmlFor="author">Your Name</Label>
 
                 <Control.text
-                  model=".yourname"
-                  id="yourname"
-                  name="yourname"
+                  model=".author"
+                  id="author"
+                  name="author"
                   placeholder="Your Name"
                   className="form-control"
                   validators={{
