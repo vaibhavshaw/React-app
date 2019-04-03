@@ -99,7 +99,7 @@ const required = val => val && val.length;
 const maxLength = len => val => !val || val.length <= len;
 const minLength = len => val => val && val.length >= len;
 
-function RenderComments({ comments, addComment, dishId }) {
+function RenderComments({ comments, postComment, dishId }) {
   if (comments != null) {
     const cmmnt = comments.map(comm => {
       return (
@@ -120,7 +120,7 @@ function RenderComments({ comments, addComment, dishId }) {
       <div>
         <h4>Comments</h4>
         <ul className="list-unstyled">{cmmnt}</ul>
-        <CommentForm dishId={dishId} addComment={addComment} />
+        <CommentForm dishId={dishId} postComment={postComment} />
       </div>
     );
   } else return <div />;
@@ -178,7 +178,7 @@ const DishDetail = props => {
           <div className="col-12 col-md-5 m-1">
             <RenderComments
               comments={props.comments}
-              addComment={props.addComment}
+              postComment={props.postComment}
               dishId={props.dish.id}
             />
           </div>
@@ -207,7 +207,7 @@ class CommentForm extends Component {
     this.toggleModal();
     // console.log("Current State is: " + JSON.stringify(values));
     // alert("Current State is: " + JSON.stringify(values));
-    this.props.addComment(
+    this.props.postComment(
       this.props.dishId,
       values.rating,
       values.author,
