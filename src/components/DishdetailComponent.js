@@ -103,7 +103,7 @@ const minLength = len => val => val && val.length >= len;
 function RenderComments({ comments, postComment, dishId }) {
   if (comments != null) {
     return (
-      <div className="m-1">
+      <div>
         {/*
       const cmmnt = comments.map(comm => {
       return (
